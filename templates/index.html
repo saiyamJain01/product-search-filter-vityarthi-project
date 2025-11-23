@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flask Shop Filter</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+
+<body>
+
+    <nav class="navbar">
+        <h1>SuperStore</h1>
+    </nav>
+
+    <div class="container">
+
+        <aside class="sidebar">
+            <form action="/" method="GET">
+
+                <div class="filterGroup">
+                    <h3>Category</h3>
+                    <select name="category">
+                        <option value="all" {% if current_category=='all' %}selected{% endif %}>All Categories</option>
+                        <option value="Clothing" {% if current_category=='Clothing' %}selected{% endif %}>Clothing
+                        </option>
+                        <option value="Footwear" {% if current_category=='Footwear' %}selected{% endif %}>Footwear
+                        </option>
+                        <option value="Electronics" {% if current_category=='Electronics' %}selected{% endif %}>
+                            Electronics</option>
+                        <option value="Accessories" {% if current_category=='Accessories' %}selected{% endif %}>
+                            Accessories</option>
+                    </select>
+                </div>
+
+                <div class="filterGroup">
+                    <h3>Color</h3>
+                    <div class="radioGroup">
+                        <label>
+                            <input type="radio" name="color" value="all" {% if current_color=='all' %}checked{% endif
+                                %}>
+                            All
+                        </label>
+                        <label>
+                            <input type="radio" name="color" value="White" {% if current_color=='White' %}checked{%
+                                endif %}>
+                            White
+                        </label>
+                        <label>
+                            <input type="radio" name="color" value="Black" {% if current_color=='Black' %}checked{%
+                                endif %}>
+                            Black
+                        </label>
+                        <label>
+                            <input type="radio" name="color" value="Blue" {% if current_color=='Blue' %}checked{% endif
+                                %}>
+                            Blue
+                        </label>
+                        <label>
+                            <input type="radio" name="color" value="Red" {% if current_color=='Red' %}checked{% endif
+                                %}>
+                            Red
+                        </label>
+                        <label>
+                            <input type="radio" name="color" value="Brown" {% if current_color=='Brown' %}checked{%
+                                endif %}>
+                            Brown
+                        </label>
+                    </div>
+                </div>
+
+                <div class="filterGroup">
+                    <h3>Max Price: ₹<span id="priceValue">{{ currentPrice }}</span></h3>
+
+                    <input type="range" name="maxPrice" min="0" max="10000" value="{{ currentPrice }}"
+                        oninput="document.getElementById('priceValue').innerText = this.value">
+                </div>
+
+                <button type="submit" class="applyBtn">Apply Filters</button>
+                <a href="/" class="resetLink">Reset</a>
+            </form>
+        </aside>
+
+        <main>
+            {% if products|length == 0 %}
+            <div id="noResults">No products found matching your filters.</div>
+            {% else %}
+            <div class="grid">
+                {% for product in products %}
+                <div class="productCard">
+                    <img src="{{ product.image }}" alt="{{ product.name }}">
+                    <div class="info">
+                        <span class="category">{{ product.category }}</span>
+                        <h4>{{ product.name }}</h4>
+                        <span class="price">₹{{ "%.2f"|format(product.price) }}</span>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+        </main>
+    </div>
+
+</body>
+
+</html>
